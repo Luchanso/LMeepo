@@ -5,7 +5,8 @@
 #include <GDIPlus.au3>
 
 Global $hwnd
-Global $iCount = 2 ; Meepo counter
+Global $bIsPause = false
+Global $iCount = 4 ; Meepo counter
 Global $iWidth = 50
 Global $iHeight = 50
 Global $iX = @DesktopWidth - $iHeight * 2
@@ -15,6 +16,7 @@ Func Main()
    ; Ctrl + Shift + Q
    HotKeySet('^+{q}', Quit)
    HotKeySet('{d}', PufPuf)
+   HotKeySet('{ENTER}', Pause)
 
    ; Make TOPMOST Text
    $hwnd = GUICreate("Text region", $iWidth, $iHeight, $iX, $iY, $WS_POPUP, BitOR($WS_EX_TOPMOST, $WS_EX_TOOLWINDOW))
@@ -23,12 +25,30 @@ Func Main()
    Draw()
 EndFunc
 
+Func Pause()
+   HotKeySet('{ENTER}')
+
+   Send("{ENTER}")
+   if $bIsPause Then
+	  HotKeySet('{d}')
+   Else
+	  HotKeySet('{d}', PufPuf)
+   EndIf
+
+   HotKeySet('{ENTER}', Pause)
+EndFunc
+
 ;-)
 Func PufPuf()
-   For $fCounter = 0 To $iCount
+   For $fCounter = 0 To $iCount - 1
 	  Sleep(100)
 	  Send("{TAB}w")
    Next
+   Send("{TAB}")
+EndFunc
+
+Func UpMeepo()
+   $iCount++
 EndFunc
 
 Func Quit()
