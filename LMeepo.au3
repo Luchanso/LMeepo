@@ -5,7 +5,7 @@
 #include <GDIPlus.au3>
 
 Global $hwnd
-Global $iCount = 5 ; Meepo counter
+Global $iCount = 2 ; Meepo counter
 Global $iWidth = 50
 Global $iHeight = 50
 Global $iX = @DesktopWidth - $iHeight * 2
@@ -20,6 +20,14 @@ Func Main()
    GUISetBkColor(0x00FF00)
 
    Draw()
+EndFunc
+
+;-)
+Func PufPuf()
+   For $fCounter = 0 To $iCount
+	  Sleep(100)
+	  Send("{TAB}w")
+   Next
 EndFunc
 
 Func Quit()
