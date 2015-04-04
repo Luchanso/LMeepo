@@ -16,6 +16,8 @@ Func Main()
    ; Ctrl + Shift + Q
    HotKeySet('^+{q}', Quit)
    HotKeySet('{d}', PufPuf)
+   HotKeySet('{o}', DownMeepo)
+   HotKeySet('{p}', UpMeepo)
    HotKeySet('{ENTER}', RouteEnterPause)
    HotKeySet('+{ENTER}', RouteShiftEnterPause)
 
@@ -47,8 +49,12 @@ EndFunc
 Func Pause()
    if Not $bIsPause Then
 	  HotKeySet('{d}')
+	  HotKeySet('{o}')
+	  HotKeySet('{p}')
    Else
 	  HotKeySet('{d}', PufPuf)
+	  HotKeySet('{o}', DownMeepo)
+	  HotKeySet('{p}', UpMeepo)
    EndIf
 
    $bIsPause = Not $bIsPause
@@ -57,18 +63,24 @@ EndFunc
 ;-)
 Func PufPuf()
    For $fCounter = 0 To $iCount - 1
-	  Sleep(100)
+	  Sleep(10)
 	  Send("{TAB}w")
    Next
    Send("{TAB}")
 EndFunc
 
 Func UpMeepo()
-   $iCount++
+   if $iCount <= 7 Then ; (5 meepo max + 2 meepo from Manta Style = 7 Meepo max)
+	  $iCount += 1
+	  Draw()
+   EndIf
 EndFunc
 
-Func UpDown()
-   $iCount++
+Func DownMeepo()
+   if $iCount > 1 Then
+	  $iCount -= 1
+	  Draw()
+   EndIf
 EndFunc
 
 Func Quit()
