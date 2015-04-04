@@ -9,14 +9,15 @@ Global $bIsPause = false
 Global $iCount = 4 ; Meepo counter
 Global $iWidth = 50
 Global $iHeight = 50
-Global $iX = @DesktopWidth - $iHeight * 2
+Global $iX = @DesktopWidth - $iHeight
 Global $iY = 50
 
 Func Main()
    ; Ctrl + Shift + Q
    HotKeySet('^+{q}', Quit)
    HotKeySet('{d}', PufPuf)
-   HotKeySet('{ENTER}', Pause)
+   HotKeySet('{ENTER}', RouteEnterPause)
+   HotKeySet('+{ENTER}', RouteShiftEnterPause)
 
    ; Make TOPMOST Text
    $hwnd = GUICreate("Text region", $iWidth, $iHeight, $iX, $iY, $WS_POPUP, BitOR($WS_EX_TOPMOST, $WS_EX_TOOLWINDOW))
@@ -25,17 +26,32 @@ Func Main()
    Draw()
 EndFunc
 
-Func Pause()
+Func RouteEnterPause()
    HotKeySet('{ENTER}')
-
    Send("{ENTER}")
-   if $bIsPause Then
+
+   Pause()
+
+   HotKeySet('{ENTER}', RouteEnterPause)
+EndFunc
+
+Func RouteShiftEnterPause()
+   HotKeySet('+{ENTER}')
+   Send("+{ENTER}")
+
+   Pause()
+
+   HotKeySet('+{ENTER}', RouteEnterPause)
+EndFunc
+
+Func Pause()
+   if Not $bIsPause Then
 	  HotKeySet('{d}')
    Else
 	  HotKeySet('{d}', PufPuf)
    EndIf
 
-   HotKeySet('{ENTER}', Pause)
+   $bIsPause = Not $bIsPause
 EndFunc
 
 ;-)
@@ -48,6 +64,10 @@ Func PufPuf()
 EndFunc
 
 Func UpMeepo()
+   $iCount++
+EndFunc
+
+Func UpDown()
    $iCount++
 EndFunc
 
