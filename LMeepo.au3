@@ -4,7 +4,7 @@
 #include <GuiConstantsEx.au3>
 #include <GDIPlus.au3>
 
-
+HotKeySet('q', Quit)
 
 Global $hwnd
 Global $iCount = 5 ; Meepo counter
