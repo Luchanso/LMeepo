@@ -4,15 +4,17 @@
 #include <GuiConstantsEx.au3>
 #include <GDIPlus.au3>
 
-; Ctrl + Shift + Q
-HotKeySet('^+{q}', Quit)
-
 Global $hwnd
 Global $iCount = 5 ; Meepo counter
 
-; Make TOPMOST Text
-$hwnd = GUICreate("Text region", 500, 50, 500, 50, $WS_POPUP, BitOR($WS_EX_TOPMOST, $WS_EX_TOOLWINDOW))
-GUISetBkColor(0xFF0000)
+Func Main()
+   ; Ctrl + Shift + Q
+   HotKeySet('^+{q}', Quit)
+
+   ; Make TOPMOST Text
+   $hwnd = GUICreate("Text region", 500, 50, 500, 50, $WS_POPUP, BitOR($WS_EX_TOPMOST, $WS_EX_TOOLWINDOW))
+   GUISetBkColor(0xFF0000)
+EndFunc
 
 Func Quit()
    Exit
@@ -23,6 +25,8 @@ Func Draw()
    SetWindowRgn($hwnd, $rgn)
    GUISetState()
 EndFunc
+
+Main()
 
 While 1
    ; Loop
