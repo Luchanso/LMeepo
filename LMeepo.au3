@@ -43,7 +43,7 @@ Func RouteShiftEnterPause()
 
    Pause()
 
-   HotKeySet('+{ENTER}', RouteEnterPause)
+   HotKeySet('+{ENTER}', RouteShiftEnterPause)
 EndFunc
 
 Func Pause()
