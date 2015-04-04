@@ -11,10 +11,8 @@ Global $iCount = 0 ; Meepo counter
 $hwnd = GUICreate("Text region", 500, 50, 500, 50, $WS_POPUP, BitOR($WS_EX_TOPMOST, $WS_EX_TOOLWINDOW))
 GUISetBkColor(0xFF0000)
 
-; Hello World
-$rgn = CreateTextRgn($hwnd, "Hello World", 50, "Arial")
-SetWindowRgn($hwnd, $rgn)
-GUISetState()
+Func Draw()
+EndFunc
 
 While 1
    ; Loop
