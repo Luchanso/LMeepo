@@ -14,6 +14,7 @@ Global $iY = 50
 Func Main()
    ; Ctrl + Shift + Q
    HotKeySet('^+{q}', Quit)
+   HotKeySet('{d}', PufPuf)
 
    ; Make TOPMOST Text
    $hwnd = GUICreate("Text region", $iWidth, $iHeight, $iX, $iY, $WS_POPUP, BitOR($WS_EX_TOPMOST, $WS_EX_TOOLWINDOW))
