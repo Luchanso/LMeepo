@@ -101,7 +101,7 @@ EndFunc
 ;-)
 Func PufPuf()
    For $fCounter = 0 To $iCount - 1
-	  Sleep(80)
+	  Sleep(60)
 	  Send("{TAB}w")
    Next
    Send("{TAB}")
@@ -140,5 +140,5 @@ EndFunc
 Main()
 
 While 1
-   ; Loop
+   Sleep(1)
 WEnd
