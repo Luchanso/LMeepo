@@ -6,6 +6,7 @@
 
 Global $hwnd
 Global $bIsPause = false
+Global $bIsSleep = false
 Global $iCount = 4 ; Meepo counter
 Global $iWidth = 50
 Global $iHeight = 50
@@ -18,6 +19,7 @@ Func Main()
    HotKeySet('{d}', PufPuf)
    HotKeySet('{o}', DownMeepo)
    HotKeySet('{p}', UpMeepo)
+   HotKeySet('{\}', SleepApp)
    HotKeySet('{ENTER}', RouteEnterPause)
    HotKeySet('+{ENTER}', RouteShiftEnterPause)
 
@@ -26,6 +28,41 @@ Func Main()
    GUISetBkColor(0x00FF00)
 
    Draw()
+EndFunc
+
+Func getMeepoCount()
+   Dim $aAdresses[3] = [0xA95D288]
+   Dim $Buffer[UBound($aAdresses)-1]
+   For $i = 0 To UBound($aAdresses) - 1
+	   $Buffer[$i] = DllStructCreate("dword a;dword b")
+	   _WinAPI_ReadProcessMemory($hProcess, $aAdresses[$i], DllStructGetPtr($Buffer[$i]), DllStructGetSize($Buffer[$i]), $read)
+	   ConsoleWrite($Buffer[$i])
+   Next
+EndFunc
+
+Func SleepApp()
+   If $bIsSleep Then
+	  $iCount = 3
+	  HotKeySet('^+{q}', Quit)
+	  HotKeySet('{d}', PufPuf)
+	  HotKeySet('{o}', DownMeepo)
+	  HotKeySet('{p}', UpMeepo)
+	  HotKeySet('{ENTER}', RouteEnterPause)
+	  HotKeySet('+{ENTER}', RouteShiftEnterPause)
+   Else
+	  $iCount = "S"
+	  Draw()
+	  HotKeySet('^+{q}')
+	  HotKeySet('{d}')
+	  HotKeySet('{o}')
+	  HotKeySet('{p}')
+	  HotKeySet('{ENTER}')
+	  HotKeySet('+{ENTER}')
+   EndIf
+
+   Draw()
+
+   $bIsSleep = Not $bIsSleep
 EndFunc
 
 Func RouteEnterPause()
@@ -52,6 +89,7 @@ Func Pause()
 	  HotKeySet('{o}')
 	  HotKeySet('{p}')
    Else
+	  Draw()
 	  HotKeySet('{d}', PufPuf)
 	  HotKeySet('{o}', DownMeepo)
 	  HotKeySet('{p}', UpMeepo)
@@ -63,7 +101,7 @@ EndFunc
 ;-)
 Func PufPuf()
    For $fCounter = 0 To $iCount - 1
-	  Sleep(10)
+	  Sleep(80)
 	  Send("{TAB}w")
    Next
    Send("{TAB}")
@@ -85,6 +123,12 @@ EndFunc
 
 Func Quit()
    Exit
+EndFunc
+
+Func DrawSleep()
+   $rgn = CreateTextRgn($hwnd, 'N', 50, "Arial")
+   SetWindowRgn($hwnd, $rgn)
+   GUISetState()
 EndFunc
 
 Func Draw()
