@@ -5,9 +5,14 @@
 #include <GDIPlus.au3>
 
 Global $hwnd
+Global $hwndTimer
+Global $hDC
 Global $bIsPause = false
 Global $bIsSleep = false
-Global $iCount = 4 ; Meepo counter
+Global $iCount = 1 ; Meepo counter
+Global $hTimer = TimerInit() ; Meepo puf timer
+Global $iPufDelay = 1500
+Global $saveCount = 1
 Global $iWidth = 50
 Global $iHeight = 50
 Global $iX = @DesktopWidth - $iHeight
@@ -23,36 +28,30 @@ Func Main()
    HotKeySet('{ENTER}', RouteEnterPause)
    HotKeySet('+{ENTER}', RouteShiftEnterPause)
 
-   ; Make TOPMOST Text
    $hwnd = GUICreate("Text region", $iWidth, $iHeight, $iX, $iY, $WS_POPUP, BitOR($WS_EX_TOPMOST, $WS_EX_TOOLWINDOW))
    GUISetBkColor(0x00FF00)
+   GUISetState()
+
+   $hwndTimer = GUICreate("Hell World", $iWidth, $iHeight, $iX - $iWidth * 2 - 15, $iY, $WS_POPUP, BitOR($WS_EX_TOPMOST, $WS_EX_TOOLWINDOW))
+   GUISetBkColor(0xFF0000)
+   GUISetState()
 
    Draw()
-EndFunc
-
-Func getMeepoCount()
-   Dim $aAdresses[3] = [0xA95D288]
-   Dim $Buffer[UBound($aAdresses)-1]
-   For $i = 0 To UBound($aAdresses) - 1
-	   $Buffer[$i] = DllStructCreate("dword a;dword b")
-	   _WinAPI_ReadProcessMemory($hProcess, $aAdresses[$i], DllStructGetPtr($Buffer[$i]), DllStructGetSize($Buffer[$i]), $read)
-	   ConsoleWrite($Buffer[$i])
-   Next
+   DrawTimer()
 EndFunc
 
 Func SleepApp()
    If $bIsSleep Then
-	  $iCount = 3
-	  HotKeySet('^+{q}', Quit)
+	  $iCount = $saveCount
 	  HotKeySet('{d}', PufPuf)
 	  HotKeySet('{o}', DownMeepo)
 	  HotKeySet('{p}', UpMeepo)
 	  HotKeySet('{ENTER}', RouteEnterPause)
 	  HotKeySet('+{ENTER}', RouteShiftEnterPause)
    Else
+	  $saveCount = $iCount
 	  $iCount = "S"
 	  Draw()
-	  HotKeySet('^+{q}')
 	  HotKeySet('{d}')
 	  HotKeySet('{o}')
 	  HotKeySet('{p}')
@@ -100,6 +99,7 @@ EndFunc
 
 ;-)
 Func PufPuf()
+   $hTimer = TimerInit()
    For $fCounter = 0 To $iCount - 1
 	  Sleep(60)
 	  Send("{TAB}w")
@@ -137,8 +137,23 @@ Func Draw()
    GUISetState()
 EndFunc
 
+Func DrawTimer()
+   $iDiff = $iPufDelay - TimerDiff($hTimer)
+   if $iDiff > 0 Then
+	  $rgn = CreateTextRgn($hwndTimer, $iDiff, 20, "Arial")
+	  SetWindowRgn($hwndTimer, $rgn)
+	  $aPos = MouseGetPos()
+	  WinMove($hwndTimer, "", $aPos[0] + 25, $aPos[1] + 25)
+   Else
+	  $rgn = CreateTextRgn($hwndTimer, "0", 20, "Arial")
+	  SetWindowRgn($hwndTimer, $rgn)
+	  WinMove($hwndTimer, "", -25, -25)
+   EndIf
+EndFunc
+
 Main()
 
 While 1
-   Sleep(1)
+   Sleep(2)
+   DrawTimer()
 WEnd
