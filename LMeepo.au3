@@ -122,11 +122,7 @@ Func SmartPuf()
    Send("{SPACE}")
    Sleep(100)
    Send("q")
-   Sleep(
-#CS
-50
-#CE
-)
+   Sleep(50)
    Send("w")
 EndFunc
 
