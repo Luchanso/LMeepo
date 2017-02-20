@@ -8,6 +8,7 @@ Global $hwnd
 Global $bIsPause = false
 Global $bIsSleep = false
 Global $iCount = 4 ; Meepo counter
+Global $iLastCount = $iCount
 Global $iWidth = 50
 Global $iHeight = 50
 Global $iX = @DesktopWidth - $iHeight
@@ -43,7 +44,7 @@ EndFunc
 
 Func SleepApp()
    If $bIsSleep Then
-	  $iCount = 3
+	  $iCount = $iLastCount
 	  HotKeySet('^+{q}', Quit)
 	  HotKeySet('{d}', PufPuf)
 	  HotKeySet('{f}', SmartPuf)
@@ -52,6 +53,7 @@ Func SleepApp()
 	  HotKeySet('{ENTER}', RouteEnterPause)
 	  HotKeySet('+{ENTER}', RouteShiftEnterPause)
    Else
+	  $iLastCount = $iCount
 	  $iCount = "S"
 	  Draw()
 	  HotKeySet('^+{q}')
