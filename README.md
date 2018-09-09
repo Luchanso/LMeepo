@@ -1,3 +1,5 @@
+[DEPRICATED] Устарело, в новых версия не рисуется поверх экрана
+
 # LMeepo
 LMeepo Script для Dota 2 
 
